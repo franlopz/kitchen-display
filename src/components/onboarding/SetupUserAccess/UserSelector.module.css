@@ -1,0 +1,9 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.container p{
+    margin: 10px 0px 0px 0px;
+}

@@ -1,0 +1,26 @@
+.svg {
+  width: 250px;
+  height: 250px;
+}
+
+.content-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.content-column h3 {
+  font-size: medium;
+  font-weight: lighter;
+  margin: 10px 0px 0px 0px;
+  color: #636e72;
+}
+
+@media (min-width: 768px) {
+  .button {
+    padding: 14px 22px;
+    width: 176px;
+  }
+}

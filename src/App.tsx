@@ -1,12 +1,23 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { Routes, Route } from 'react-router-dom'
+import Login from './pages/Login/Login'
+import OnBoarding from './pages/OnBoarding/OnBoarding'
+import { Toaster } from 'react-hot-toast'
+import { StepsProvider } from './context/StepsContext'
+import PinScreen from './pages/PinScreen/PinScreen'
 
-const Head = ({title}:{title:string}) => <h1>{title}</h1>
 function App() {
-
   return (
-   <div><Head title={'dsa'}/></div>
+    <>
+      <StepsProvider>
+        <Toaster />
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/setup' element={<OnBoarding />} />
+          <Route path='/pin' element={<PinScreen />} />
+        </Routes>
+      </StepsProvider>
+    </>
   )
 }
 

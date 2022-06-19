@@ -1,0 +1,11 @@
+.delete-icon {
+  width: 25px;
+  height: 25px;
+  color: rgba(243, 70, 70, 0.973);
+  padding: 0px 10px;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  fill: rgba(201, 20, 20, 0.973);
+}
