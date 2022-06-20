@@ -1,0 +1,39 @@
+.pin-input-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  position: relative;
+}
+
+.input {
+  height: 60px;
+  width: 50px;
+  border-radius: 10%;
+  box-shadow: none;
+  border-width: 0px;
+  font-size: x-large;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+.button {
+    width: 231px;
+    height: 30px;
+    color: grey;
+    background-color: rgb(211, 211, 211);
+    border-width: 0px;
+    margin-top: 10px;
+  }
+  
+  .button:hover {
+    background-color: rgb(184, 184, 184);
+    opacity: 1;
+    transform: translateY(0);
+    transition-duration: 0.35s;
+  }
+  
+  .button:active {
+    transform: translateY(2px);
+    transition-duration: 0.35s;
+  }
+  
