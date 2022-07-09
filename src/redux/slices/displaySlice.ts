@@ -1,6 +1,6 @@
-import { Order } from '@/pages/Main/Main'
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import orders from '@/components/main/OrderCard/order.json'
+import { Order } from '@/interfaces/Order'
 
 interface ScreensData {
   [screen: string]: Order[]
