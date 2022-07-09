@@ -1,0 +1,150 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  height: fit-content;
+  max-height: 500px;
+  margin: 10px;
+  user-select: none;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  max-height: 130px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.header p {
+  margin: 0px;
+}
+.header-row {
+  height: 35px;
+  margin: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.new {
+  background-color: #43aa8b;
+}
+
+.warning {
+  background-color: #f94144;
+}
+
+.caution {
+  background-color: #f9c74f;
+}
+
+.number {
+  font-weight: bold;
+  background-color: #262626;
+  color: #fff;
+  padding: 3px 5px 3px 5px;
+  border-radius: 5px;
+  margin: 3px;
+  font-size: 0.9em;
+}
+
+.type {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.orders {
+  overflow: auto;
+}
+
+.order-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.categorie-name {
+  background-color: #e0e0e0;
+  text-align: center;
+  padding: 3px 0px;
+  margin: 0px;
+}
+
+.order-container {
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 10px 0px;}
+
+.order-container p {
+  margin: 0px;
+}
+
+.order-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+  overflow-wrap: normal;
+  word-break: normal;
+  gap: 10px;
+  font-weight: bold;
+  padding: 0px 10px;
+}
+
+.portion {
+  padding: 0px 10px;
+  font-weight: 600;
+}
+
+.tag-container{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 10px;
+  padding: 0px 10px;
+}
+
+.tag {
+  padding: 0px 25px;
+  font-weight: 400;
+}
+
+.button {
+  border-radius: 10px;
+  border-style: none;
+  box-shadow: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  height: 40px;
+  min-height: 40px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 10px;
+}
+
+.button:hover{
+  transform: scale(1.01);
+  border-color: #ffffff8e;
+}
+.button.seen {
+  background-color: #97a8be;
+}
+
+.button.confirm {
+  background-color: #2f80ed;
+}
+
+.button:hover {
+  filter: brightness(110%) saturate(140%);
+}
+
+.button:active {
+  box-shadow: rgba(0, 0, 0, 0.1) 0 3px 6px 0, rgba(0, 0, 0, 0.1) 0 0 10px 0,
+    rgba(0, 0, 0, 0.1) 0 1px 4px -1px;
+  transform: translateY(2px);
+  transition-duration: 0.35s;
+}
