@@ -4,7 +4,7 @@ import styles from './Form.module.css'
 type Props = React.DetailedHTMLProps<
   React.SelectHTMLAttributes<HTMLSelectElement>,
   HTMLSelectElement
-> & { data: string[] | null; label: string }
+> & { data: string[] | null | number[]; label: string }
 
 const Select = ({
   value = '',
