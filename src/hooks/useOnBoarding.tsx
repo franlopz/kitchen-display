@@ -86,9 +86,10 @@ const useOnBoarding = () => {
       if (listAreas.includes(item) === false) {
         const newList = [...listAreas, item]
         window.localStorage.setItem('areas', JSON.stringify(newList))
+
         return setListAreas(newList)
       }
-      return
+      return toast.error('Área ya existe')
     }
     window.localStorage.setItem('areas', JSON.stringify([item]))
     setListAreas([item])
@@ -99,6 +100,8 @@ const useOnBoarding = () => {
     if (newListItems) {
       if (newListItems.length > 0) {
         window.localStorage.setItem('areas', JSON.stringify(newListItems))
+        window.localStorage.removeItem('screens')
+        window.localStorage.removeItem('users')
         return setListAreas(newListItems)
       }
       window.localStorage.removeItem('areas')
