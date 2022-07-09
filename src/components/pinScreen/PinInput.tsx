@@ -1,3 +1,4 @@
+import usePinLogin from '@/hooks/usePinLogin'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './PinInput.module.css'
 
@@ -12,6 +13,8 @@ interface FormPin {
 const initialData: FormPin = { first: '', second: '', third: '', fourth: '' }
 
 const PinInput = () => {
+  const { login } = usePinLogin()
+
   const refs = useRef([
     React.createRef<HTMLInputElement>(),
     React.createRef<HTMLInputElement>(),
@@ -25,7 +28,7 @@ const PinInput = () => {
     refs?.current[0]?.current?.focus()
   }, [])
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentValue = formPin[e.target.name as keyof FormPin]
     const isNumber = e.target.value.search(/[0-9]/i)
     if (
@@ -36,7 +39,12 @@ const PinInput = () => {
       if (e.target.name === 'first') refs?.current[1]?.current?.focus()
       if (e.target.name === 'second') refs?.current[2]?.current?.focus()
       if (e.target.name === 'third') refs?.current[3]?.current?.focus()
-      if (e.target.name === 'fourth') refs?.current[3]?.current?.blur()
+      if (e.target.name === 'fourth') {
+        refs?.current[3]?.current?.blur()
+        await login()
+        setFormPin(initialData)
+        refs?.current[0]?.current?.focus()
+      }
     }
   }
 
