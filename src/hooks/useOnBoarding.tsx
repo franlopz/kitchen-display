@@ -9,7 +9,7 @@ export interface ScreenObject {
   [name: string]: string[]
 }
 export interface User {
-  userName: string
+  name: string
   pin: string
   role: string
   screens: ScreenObject
@@ -21,7 +21,7 @@ export interface Settings {
 }
 
 const useOnBoarding = () => {
-  const roles: string[] = ['Administrator', 'User']
+  const roles: string[] = ['Admin', 'User', 'Guest']
   const [listAreas, setListAreas] = useState<DataListProps['label']>(null)
   const [listScreens, setListScreens] = useState<ScreenObject | null>(null)
   const [listUsers, setListUsers] = useState<User[] | null>(null)
@@ -114,7 +114,7 @@ const useOnBoarding = () => {
         listUsers?.find((eachUser) => eachUser.pin === user.pin),
       )
       const userExists = Boolean(
-        listUsers?.find((eachUser) => eachUser.userName === user.userName),
+        listUsers?.find((eachUser) => eachUser.name === user.name),
       )
       if (pinExists) return toast.error('Pin ya existe')
       if (userExists) return toast.error('Nombre de usuario ya existe')
@@ -129,8 +129,8 @@ const useOnBoarding = () => {
 
   const removeUser = (label: string) => {
     const labelSplit = label.split(' > ')
-    const username = labelSplit[0]
-    const newListUsers = listUsers?.filter((user) => user.userName !== username)
+    const name = labelSplit[0]
+    const newListUsers = listUsers?.filter((user) => user.name !== name)
     if (newListUsers) {
       if (newListUsers.length > 0) {
         window.localStorage.setItem('users', JSON.stringify(newListUsers))

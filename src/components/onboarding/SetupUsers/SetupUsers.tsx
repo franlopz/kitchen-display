@@ -12,7 +12,7 @@ import DeleteIcon from '@/components/global/DeleteIcon/DeleteIcon'
 import toast from 'react-hot-toast'
 import { StepContextType, StepsContext } from '@/context/StepsContext'
 
-const initialFormData = { userName: '', pin: '', role: '', screens: {} }
+const initialFormData = { name: '', pin: '', role: '', screens: {} }
 
 const SetupUsers = () => {
   const { roles, listUsers, addUser, removeUser } = useOnBoarding()
@@ -24,10 +24,10 @@ const SetupUsers = () => {
     const usersLabel: string[] = []
 
     for (const user of users) {
-      const username = user.userName
+      const name = user.name
       const pin = user.pin
       const role = user.role
-      usersLabel.push(`${username} > ${pin} > ${role}`)
+      usersLabel.push(`${name} > ${pin} > ${role}`)
     }
     return usersLabel
   }
@@ -39,7 +39,7 @@ const SetupUsers = () => {
   ]
 
   const onClickHandler = () => {
-    if (formData.pin && formData.role && formData.userName) {
+    if (formData.pin && formData.role && formData.name) {
       setFormData(initialFormData)
       addUser(formData)
     }
@@ -56,7 +56,7 @@ const SetupUsers = () => {
 
   const nextClickHandler = () => {
     const adminExists = Boolean(
-      listUsers?.find((user) => user.role === 'Administrator'),
+      listUsers?.find((user) => user.role === 'Admin'),
     )
     if (adminExists === false) {
       return toast.error('Debe haber al menos un administrador', {
@@ -78,10 +78,10 @@ const SetupUsers = () => {
               <Input
                 variantStyle={styles['fix-height']}
                 required={true}
-                name='userName'
+                name='name'
                 placeholder='Usuario'
                 ref={ref}
-                value={formData.userName}
+                value={formData.name}
                 onChange={onChangeHandler}
               />
               <Input

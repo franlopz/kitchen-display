@@ -15,7 +15,7 @@ interface Settings {
   }
 }
 
-interface DisplayState {
+export interface DisplayState {
   orders: ScreensData
   screens: string[]
   selectedScreen: string[]

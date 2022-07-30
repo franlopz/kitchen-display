@@ -47,7 +47,7 @@ const UserSelector = ({ user, getAreas, getScreens, setSettings }: UserFn) => {
         userScreens.push(screen.value)
       }
       const newUser: User = {
-        userName: user.userName,
+        name: user.name,
         pin: user.pin,
         role: user.role,
         screens: { [userArea]: userScreens },
@@ -56,7 +56,7 @@ const UserSelector = ({ user, getAreas, getScreens, setSettings }: UserFn) => {
       setSettings((state) => {
         const currentUsers = [...state.users]
         const filteredUsers = currentUsers.filter(
-          (currentUser) => currentUser.userName !== user.userName,
+          (currentUser) => currentUser.name !== user.name,
         )
         return {
           ...state,
@@ -68,10 +68,10 @@ const UserSelector = ({ user, getAreas, getScreens, setSettings }: UserFn) => {
   }
 
   return (
-    <div className={styles.container} key={user.userName}>
+    <div className={styles.container} key={user.name}>
       <p>
         <strong>Usuario: </strong>
-        {`${user.userName} `}
+        {`${user.name} `}
         <strong>Rol: </strong>
         {user.role}
       </p>
