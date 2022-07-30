@@ -1,6 +1,9 @@
-import usePinLogin from '@/hooks/usePinLogin'
+import { useAppDispatch } from '@/redux/hooks/useRedux'
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './PinInput.module.css'
+import { checkToken, userLogin } from '@/redux/slices/authSlice'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const pinInputArray = ['first', 'second', 'third', 'fourth']
 
@@ -13,7 +16,8 @@ interface FormPin {
 const initialData: FormPin = { first: '', second: '', third: '', fourth: '' }
 
 const PinInput = () => {
-  const { login } = usePinLogin()
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const refs = useRef([
     React.createRef<HTMLInputElement>(),
@@ -41,9 +45,29 @@ const PinInput = () => {
       if (e.target.name === 'third') refs?.current[3]?.current?.focus()
       if (e.target.name === 'fourth') {
         refs?.current[3]?.current?.blur()
-        await login()
+        const pin = Object.values(formPin)
+        pin.push(e.target.value)
+        const pinString = pin.join('')
+
         setFormPin(initialData)
         refs?.current[0]?.current?.focus()
+
+        await dispatch(checkToken())
+          .unwrap()
+          .then()
+          .catch((error) => {
+            toast.error(error)
+            navigate('/logout')
+            throw new Error('token invalid')
+          })
+
+        await dispatch(userLogin(pinString))
+          .unwrap()
+          .then(() => navigate('/'))
+          .catch((error) => {
+            console.log(error)
+            toast.error(error, { id: 'login-error', duration: 1500 })
+          })
       }
     }
   }

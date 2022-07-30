@@ -3,15 +3,32 @@
   width: 100%;
   border-width: 1px;
   outline-color: #2563eb;
-  border-color: #e5e7eb;
+  border-color: transparent;
   border-style: solid;
+  border-color: #6f81a5;
   font-size: medium;
   margin: 0px;
   padding: 0px 0px 0px 10px;
   border-radius: 6px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.select-container{
+.input-container{
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+}
+
+.input-container h5{
+ margin: 0px;
+ z-index: 9999;
+ position: absolute;
+}
+
+.select-container {
   position: relative;
   width: 100%;
 }
@@ -28,12 +45,12 @@
   border-style: solid;
 }
 
-.select-label{
-position: absolute;
-font-size: 16px;
-left: 13px;
-top: 3px;
-color: #6f81a5;
+.select-label {
+  position: absolute;
+  font-size: 16px;
+  left: 13px;
+  top: 3px;
+  color: #6f81a5;
 }
 
 .email {

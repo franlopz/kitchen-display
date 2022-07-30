@@ -7,12 +7,35 @@ import UserSelector from './UserSelector'
 import usePostSettings from '@/hooks/usePostSettings'
 import { useContext } from 'react'
 import { StepContextType, StepsContext } from '@/context/StepsContext'
+import { useAppDispatch } from '@/redux/hooks/useRedux'
+import { initUsers } from '@/redux/slices/authSlice'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const SetupUserAccess = () => {
   const { listUsers, getAreas, getScreens, setSettings, settings } =
     useOnBoarding()
+  const navigate = useNavigate()
   const { postSettings } = usePostSettings()
+  const dispatch = useAppDispatch()
   const { previousStep } = useContext(StepsContext) as StepContextType
+
+  const handleSubmit = async () => {
+    if (
+      settings.users.length > 0 &&
+      settings.users.length !== listUsers?.length &&
+      listUsers
+    ) {
+      toast.error('Incomplete data', { id: 'incompleteData' })
+      return
+    }
+    dispatch(initUsers(settings))
+      .unwrap()
+      .then(() => navigate('/pin'))
+      .catch((error) => {
+        toast.error(error, { id: 'init-error', duration: 1500 })
+      })
+  }
 
   return (
     <Container>
@@ -22,7 +45,7 @@ const SetupUserAccess = () => {
             <div className={styles['users-select-container']}>
               {listUsers?.map((user) => (
                 <UserSelector
-                  key={user.userName}
+                  key={user.name}
                   user={user}
                   getAreas={getAreas}
                   getScreens={getScreens}
@@ -32,15 +55,10 @@ const SetupUserAccess = () => {
             </div>
             <div className={styles['buttons-container']}>
               <Button onClick={previousStep} aditionalStyle={styles.button}>
-                Atrás
+                Back
               </Button>
-              <Button
-                onClick={() => {
-                  postSettings(settings, listUsers?.length ?? 0)
-                }}
-                aditionalStyle={styles.button}
-              >
-                Siguiente
+              <Button onClick={handleSubmit} aditionalStyle={styles.button}>
+                Save
               </Button>
             </div>
           </div>
