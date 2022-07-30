@@ -6,6 +6,26 @@
   align-items: center;
 }
 
+.signup {
+  position: absolute;
+  bottom: 50px;
+  border-width: 0px;
+  background-color: rgb(223, 223, 223);
+  border-radius: 10px;
+  margin: 10px;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.signup h4 {
+  margin: 5px;
+}
+
+.signup:hover h4:last-child {
+  color: red;
+}
+
 .form-container {
   position: relative;
   display: flex;
@@ -49,11 +69,23 @@
   height: 25px;
   width: 25px;
   top: 1px;
-  left: 15px;
+  left: 0px;
 }
 
 .loading {
   animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+form p {
+  margin: 3px 0px 5px 0px;
+  color: #bf1650;
+  font-size: 14px;
+
+}
+
+.required {
+  border-color: red !important;
+  outline-color: red;
 }
 
 @keyframes spinner {

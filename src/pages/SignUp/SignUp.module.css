@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    width: 100%;
+    padding: 0px 10px;
+    gap: 10px;
+}
+
+.form p{
+    margin: -6px 0px 5px 0px;
+    color: #bf1650;
+    font-size: 14px;
+}
+
+.required {
+    border-color: red !important;
+  outline-color: red;
+  }
+
