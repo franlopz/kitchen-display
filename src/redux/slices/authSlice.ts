@@ -2,9 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import * as auth from '@/services/auth'
 import { Settings } from '@/hooks/useOnBoarding'
 import { DisplayState } from './displaySlice'
-
-const user = localStorage.getItem('user')
-const initialUser = user ? JSON.parse(user) : null
+import { initialUser } from '@/lib/getUser'
 
 interface User {
   token: string
@@ -180,7 +178,7 @@ const authSlice = createSlice({
         state.loading = false
         console.log(action)
         if (state.user)
-          state.user = {
+          state = {
             setupCompleted: state.user.setupCompleted,
             ...action.payload,
           }
