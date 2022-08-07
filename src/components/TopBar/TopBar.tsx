@@ -51,8 +51,10 @@ const TopBar = () => {
   const { selectedScreen, screens, settings } = useAppSelector(
     (state) => state.display,
   )
+
   const dispatch = useAppDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   useEffect(() => {
     dispatch(fetchOrders())
   }, [dispatch])
@@ -67,6 +69,7 @@ const TopBar = () => {
       JSON.stringify(selectedScreen),
     )
   }, [selectedScreen])
+
   const getOptions = () => {
     const options = screens.map((screen) => {
       return {
