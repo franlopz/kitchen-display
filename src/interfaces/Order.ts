@@ -1,26 +1,38 @@
 interface Tag {
+  quantity: number
+  _id: string
   name: string
-  qty: number
 }
 
 export interface Item {
+  _id: string
   categorie: string
   name: string
-  qty: number
+  quantity: number
   uid: string
-  status: string
-  step: string
+  status: 'active' | 'prepared' | 'voided'
+  isGift: boolean
   portion: string
   tags: Tag[]
 }
 
-export interface Order {
-  type: string
-  number: number
-  waiter: string
-  table: string
+interface Type {
+  name: string
   color: string
+}
+export interface Order {
+  _id: string
+  account: string
+  area: string
+  screen: string
+  type: Type
+  isDone: boolean
+  isVoided: boolean
+  number: number
+  table: string
+  seller: string
   tid: number
-  date: string
-  items: Item[]
+  orders: Item[]
+  createdAt: string
+  updatedAt: string
 }

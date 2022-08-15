@@ -1,35 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import * as auth from '@/services/auth'
 import { Settings } from '@/hooks/useOnBoarding'
-import { DisplayState } from './displaySlice'
 import { initialUser } from '@/lib/getUser'
+import { AuthState, ReduxState } from '@/interfaces/ReduxState'
 
-interface User {
-  token: string
-  tokenExpiration: string
-  refreshToken: string
-  refreshTokenExpiration: string
-  userId: string | null
-  setupCompleted: boolean
-}
-
-interface State {
-  user: User | null
-  loading: boolean
-  error: string | null
-  success: boolean
-}
-
-const initialState: State = {
+const initialState: AuthState = {
   user: initialUser,
   loading: false,
   error: null,
   success: false,
-}
-
-export interface ReduxState {
-  auth: State
-  display: DisplayState
 }
 
 export const login = createAsyncThunk(
@@ -65,9 +44,7 @@ export const checkToken = createAsyncThunk(
     if (today > tokenExpiration) {
       try {
         const data = await auth.refresh()
-        console.log(data)
         const newUserState = { ...state.auth.user, ...data }
-        console.log(newUserState)
         localStorage.setItem('user', JSON.stringify(newUserState))
         return newUserState
       } catch (error) {
@@ -176,7 +153,6 @@ const authSlice = createSlice({
       })
       .addCase(checkToken.fulfilled, (state, action) => {
         state.loading = false
-        console.log(action)
         if (state.user)
           state = {
             setupCompleted: state.user.setupCompleted,
