@@ -1,6 +1,11 @@
 import useOrders from '@/hooks/useOrders'
-import { Order } from '@/interfaces/Order'
+import { Order, Item } from '@/interfaces/Order'
+import { useAppDispatch } from '@/redux/hooks/useRedux'
+import { checkToken } from '@/redux/slices/authSlice'
+import { updateOrder } from '@/redux/slices/displaySlice'
 import React, { FC, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 import Header from './Header'
 import styles from './OrderCard.module.css'
 
@@ -10,19 +15,41 @@ interface Props {
 }
 
 const OrderCard: FC<Props> = ({ order, screen }) => {
-  const { type, number, waiter, table, date, items } = order
+  const { _id, type, number, seller, table, createdAt, orders, isVoided } =
+    order
+
   const { ordersGroup, getStatus } = useOrders({
-    items,
-    date,
+    orders,
+    createdAt,
   })
+
+  const navigate = useNavigate()
+
   const [buttonCaption, setButtonCaption] = useState<string>('Listo')
+
   const [buttonInLineStyle, setButtonInLineStyle] = useState<
     React.CSSProperties | undefined
   >(undefined)
 
-  const clickHandler = () => {
-    setButtonCaption('Confirmar')
-    setButtonInLineStyle({ backgroundColor: '#2f80ed' })
+  const dispatch = useAppDispatch()
+
+  const clickHandler = async () => {
+    if (buttonCaption === 'Listo') {
+      setButtonCaption('Confirmar')
+      setButtonInLineStyle({ backgroundColor: '#2f80ed' })
+    }
+    if (buttonCaption === 'Confirmar') {
+      await dispatch(checkToken())
+        .unwrap()
+        .then()
+        .catch((error) => {
+          toast.error(error)
+          navigate('/logout')
+          throw new Error('token invalid')
+        })
+      await dispatch(updateOrder({ _id, isDone: 'true' }))
+      setButtonCaption('Cargando...')
+    }
   }
 
   useEffect(() => {
@@ -34,32 +61,32 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
     return () => clearInterval(interval)
   }, [buttonCaption])
 
-  // if (loading) return null
   return (
     <div className={styles.container}>
       <Header
         screen={screen}
         number={number}
-        type={type}
-        waiter={waiter}
+        type={type.name}
+        seller={seller}
         table={table}
-        date={date}
+        isVoided={isVoided}
+        createdAt={createdAt}
       />
       <div className={styles.orders}>
-        {ordersGroup.map(([categorie, items]) => (
+        {ordersGroup.map(([categorie, orders]) => (
           <div key={categorie} className={styles['order-group']}>
             <p className={styles['categorie-name']}>{categorie}</p>
-            {items.map((item) => (
-              <div key={item.uid} className={styles['order-container']}>
+            {orders.map((item: Item) => (
+              <div key={item._id} className={styles['order-container']}>
                 <div className={styles['order-item']}>
-                  <p>{item.qty}</p>
+                  <p>{item.quantity}</p>
                   <p>{item.name}</p>
                 </div>
                 <p className={styles.portion}>{item.portion}</p>
                 <div className={styles['tag-container']}>
                   {item.tags.map((tag) => (
                     <p key={tag.name} className={styles.tag}>{`${
-                      tag.qty !== 1 ? tag.qty + ' x' : ''
+                      tag.quantity !== 1 ? tag.quantity + ' x' : ''
                     } ${tag.name}`}</p>
                   ))}
                 </div>

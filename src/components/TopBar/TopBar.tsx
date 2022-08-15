@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/useRedux'
 import {
   fetchOrders,
+  initializeState,
   saveSettings,
   selectScreen,
 } from '@/redux/slices/displaySlice'
@@ -48,7 +49,7 @@ const customStyles = {
 }
 
 const TopBar = () => {
-  const { selectedScreen, screens, settings } = useAppSelector(
+  const { selectedScreens, screens, settings } = useAppSelector(
     (state) => state.display,
   )
 
@@ -56,8 +57,16 @@ const TopBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
-    dispatch(fetchOrders())
+    dispatch(initializeState())
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(
+      fetchOrders({
+        isDone: false,
+      }),
+    )
+  }, [dispatch, selectedScreens])
 
   const selectTab = (tab: string[]) => {
     dispatch(selectScreen(tab))
@@ -66,27 +75,30 @@ const TopBar = () => {
   useEffect(() => {
     window.localStorage.setItem(
       'selectedScreens',
-      JSON.stringify(selectedScreen),
+      JSON.stringify(selectedScreens),
     )
-  }, [selectedScreen])
+  }, [selectedScreens])
 
   const getOptions = () => {
-    const options = screens.map((screen) => {
-      return {
-        value: screen,
-        label: screen,
-      }
+    const options: { value: string; label: string }[] = []
+
+    screens.forEach((screens) => {
+      return screens.screens.forEach((screen) => {
+        options.push({
+          value: `${screens.area}: ${screen}`,
+          label: `${screens.area}: ${screen}`,
+        })
+      })
     })
 
     return options
   }
 
-  console.log(settings)
   const getValues = () => {
-    const values = selectedScreen.map((screen) => {
+    const values = selectedScreens.map((screen) => {
       return {
-        value: screen,
-        label: screen,
+        value: `${screen.area}: ${screen.screen}`,
+        label: `${screen.area}: ${screen.screen}`,
       }
     })
     return values
@@ -120,7 +132,6 @@ const TopBar = () => {
       ...settings,
       [e.target.name]: { ...settings[e.target.name], [type]: e.target.value },
     }
-    console.log(newSettings)
     dispatch(saveSettings(newSettings))
     localStorage.setItem('screenSettings', JSON.stringify(newSettings))
   }
@@ -134,23 +145,26 @@ const TopBar = () => {
       <Modal title='Configuración' isOpen={isModalOpen}>
         <div className={styles['modal-settings']}>
           <div className={styles['group-settings']}>
-            {selectedScreen.map((screen) => {
-              const defaultTime1 = settings[screen]?.time1 ?? defaultTime.time1
-              const defaultTime2 = settings[screen]?.time2 ?? defaultTime.time2
+            {selectedScreens.map((screen) => {
+              const identifier = `${screen.area}: ${screen.screen}`
+              const defaultTime1 =
+                settings[identifier]?.time1 ?? defaultTime.time1
+              const defaultTime2 =
+                settings[identifier]?.time2 ?? defaultTime.time2
               return (
-                <div className={styles['settings-container']} key={screen}>
-                  <h3>{screen}</h3>
+                <div className={styles['settings-container']} key={identifier}>
+                  <h3>{`${screen.area}: ${screen.screen}`}</h3>
                   <SelectB
                     onChange={(e) => handleChange(e, 'width')}
-                    value={settings[screen]?.width}
-                    name={screen}
+                    value={settings[identifier]?.width}
+                    name={identifier}
                     label='Ancho'
                     data={widths}
                   />
                   <SelectB
                     onChange={(e) => handleChange(e, 'columns')}
-                    value={settings[screen]?.columns}
-                    name={screen}
+                    value={settings[identifier]?.columns}
+                    name={identifier}
                     label='Columnas'
                     data={columnsNumber}
                   />
@@ -159,7 +173,7 @@ const TopBar = () => {
                       type='number'
                       min={0}
                       onChange={(e) => handleChange(e, 'time1')}
-                      name={screen}
+                      name={identifier}
                       value={defaultTime1}
                       placeholder='Tiempo 1'
                     />
@@ -168,7 +182,7 @@ const TopBar = () => {
                       min={0}
                       onChange={(e) => handleChange(e, 'time2')}
                       value={defaultTime2}
-                      name={screen}
+                      name={identifier}
                       placeholder='Tiempo 2'
                     />
                     <p>0</p>

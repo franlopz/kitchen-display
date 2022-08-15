@@ -1,16 +1,16 @@
-import { Item } from '@/pages/Main/Main'
 import { useEffect, useState } from 'react'
 import styles from '@/components/main/OrderCard/OrderCard.module.css'
 import { useAppSelector } from '@/redux/hooks/useRedux'
 import { defaultTime } from '@/constants/constants'
+import { Item } from '@/interfaces/Order'
 
 type GroupedOrders = [string, Item[]][]
 
 interface Props {
-  items?: Item[]
-  date?: string
+  orders?: Item[]
+  createdAt?: string
 }
-const useOrders = ({ items, date }: Props) => {
+const useOrders = ({ orders, createdAt }: Props) => {
   const [ordersGroup, setOrdersGroup] = useState<GroupedOrders>([])
   const [elapsedTime, setElapsedTime] = useState<string>('00:00:00')
   const [loading, setLoading] = useState<boolean>(true)
@@ -22,10 +22,10 @@ const useOrders = ({ items, date }: Props) => {
   }
   const { settings } = useAppSelector((state) => state.display)
 
-  const getInitialTimeCounter = async (date: string) => {
+  const getInitialTimeCounter = async (createdAt: string) => {
     const now = new Date()
     const nowInMilliseconds = new Date(now.toISOString())
-    const orderDate = new Date(date)
+    const orderDate = new Date(createdAt)
     const diff = nowInMilliseconds.getTime() - orderDate.getTime()
     const hoursWithDecimals = diff / 3600000
     let hours: string | number = Math.trunc(hoursWithDecimals)
@@ -61,16 +61,16 @@ const useOrders = ({ items, date }: Props) => {
   }
 
   useEffect(() => {
-    if (items) {
-      const groupedOrders = groupBy(items, (i) => i.categorie)
+    if (orders) {
+      const groupedOrders = groupBy(orders, (i) => i.categorie)
       setOrdersGroup(Object.entries(groupedOrders))
     }
-  }, [items])
+  }, [orders])
 
   useEffect(() => {
-    if (date) {
+    if (createdAt) {
       const interval = setInterval(() => {
-        getInitialTimeCounter(date).then(() => {
+        getInitialTimeCounter(createdAt).then(() => {
           setLoading(false)
         })
       })
@@ -78,7 +78,7 @@ const useOrders = ({ items, date }: Props) => {
         clearInterval(interval)
       }
     }
-  }, [])
+  }, [createdAt])
 
   return { ordersGroup, getInitialTimeCounter, getStatus, elapsedTime, loading }
 }
