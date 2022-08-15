@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import { useAppSelector } from '@/redux/hooks/useRedux'
 import { socket } from '@/context/socket'
-import { Dispatch } from '@reduxjs/toolkit'
 
 interface ListenerInterface {
   event?: string
-  action?: Dispatch
+  action?: (data: string) => void
 }
 const useSocket = () => {
   const { accountId } = useAppSelector((state) => state.socket)
@@ -14,12 +13,11 @@ const useSocket = () => {
     socket.on(accountId as string, (msg) => {
       console.log(msg)
     })
-    console.log(socket.connected)
 
     return () => {
       socket.off(accountId as string)
     }
-  }, [])
+  }, [accountId])
 
   const listener = ({ event, action }: ListenerInterface) => {
     if (event && action) {

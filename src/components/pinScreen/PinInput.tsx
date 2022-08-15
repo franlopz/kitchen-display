@@ -65,7 +65,6 @@ const PinInput = () => {
           .unwrap()
           .then(() => navigate('/'))
           .catch((error) => {
-            console.log(error)
             toast.error(error, { id: 'login-error', duration: 1500 })
           })
       }

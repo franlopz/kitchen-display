@@ -21,10 +21,7 @@ const usePostSettings = () => {
   }
 
   const postSettings = (data: Settings, usersLength: number) => {
-    // console.log(data)
     const dataCompleted = isDataCompleted(data, usersLength)
-    console.log(dataCompleted)
-    console.log(data)
 
     if (dataCompleted === false)
       toast.error('Datos incompletos', { id: 'incompletedData' })

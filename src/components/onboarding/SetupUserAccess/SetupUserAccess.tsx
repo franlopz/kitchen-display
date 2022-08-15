@@ -4,7 +4,6 @@ import Container from '../Container'
 import styles from '../OnBoarding.module.css'
 import Button from '@/components/global/Button/Button'
 import UserSelector from './UserSelector'
-import usePostSettings from '@/hooks/usePostSettings'
 import { useContext } from 'react'
 import { StepContextType, StepsContext } from '@/context/StepsContext'
 import { useAppDispatch } from '@/redux/hooks/useRedux'
@@ -16,7 +15,6 @@ const SetupUserAccess = () => {
   const { listUsers, getAreas, getScreens, setSettings, settings } =
     useOnBoarding()
   const navigate = useNavigate()
-  const { postSettings } = usePostSettings()
   const dispatch = useAppDispatch()
   const { previousStep } = useContext(StepsContext) as StepContextType
 
