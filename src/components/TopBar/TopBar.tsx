@@ -36,6 +36,7 @@ const customStyles = {
   container: (base: CSSObjectWithLabel) => ({
     ...base,
     width: '100%',
+    flex: 'auto',
     margin: '0 auto',
     padding: '10px',
     color: 'black',
@@ -45,6 +46,22 @@ const customStyles = {
     backgroundColor: 'transparent',
     height: '40px',
     borderColor: '#787e888e',
+  }),
+  valueContainer: (base: CSSObjectWithLabel) => ({
+    ...base,
+    display: '-webkit-box',
+    position: 'relative',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    width: '100%',
+    height: '80%',
+    overflowX: 'auto',
+    padding: '0px',
+  }),
+  multiValue: (base: CSSObjectWithLabel) => ({
+    ...base,
+    width: 'fit-content',
   }),
 }
 

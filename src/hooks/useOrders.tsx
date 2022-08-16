@@ -62,7 +62,7 @@ const useOrders = ({ orders, createdAt }: Props) => {
 
   useEffect(() => {
     if (orders) {
-      const groupedOrders = groupBy(orders, (i) => i.categorie)
+      const groupedOrders = groupBy(orders, (i) => i.category)
       setOrdersGroup(Object.entries(groupedOrders))
     }
   }, [orders])

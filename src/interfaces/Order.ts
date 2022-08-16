@@ -6,7 +6,7 @@ interface Tag {
 
 export interface Item {
   _id: string
-  categorie: string
+  category: string
   name: string
   quantity: number
   uid: string

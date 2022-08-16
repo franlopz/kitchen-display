@@ -73,9 +73,9 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
         createdAt={createdAt}
       />
       <div className={styles.orders}>
-        {ordersGroup.map(([categorie, orders]) => (
-          <div key={categorie} className={styles['order-group']}>
-            <p className={styles['categorie-name']}>{categorie}</p>
+        {ordersGroup.map(([category, orders]) => (
+          <div key={category} className={styles['order-group']}>
+            <p className={styles['category-name']}>{category}</p>
             {orders.map((item: Item) => (
               <div key={item._id} className={styles['order-container']}>
                 <div className={styles['order-item']}>
