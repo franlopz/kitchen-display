@@ -2,7 +2,7 @@ import socketClient, { Socket } from 'socket.io-client'
 import { BASE_URL } from '@/lib/config'
 import { createContext, FC, ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/useRedux'
-import { setAccountId } from '@/redux/slices/socketSlice'
+import { setAccountId, setIsConnected } from '@/redux/slices/socketSlice'
 
 interface Props {
   children: ReactNode
@@ -20,18 +20,33 @@ export const SocketContextProvider: FC<Props> = ({ children }) => {
       socket = socketClient(BASE_URL, {
         query: { token },
         transports: ['websocket'],
+        reconnection: true,
       })
 
-      socket.emit('join', token)
+      socket.on('connect', () => {
+        socket.emit('join', token)
+      })
+
       socket.on('joined', (accountId) => {
         dispatch(setAccountId(accountId))
+        dispatch(setIsConnected('connected'))
       })
+
+      socket.on('disconnect', () => {
+        dispatch(setIsConnected('disconnected'))
+      })
+
+      socket.io.on('reconnect_attempt', () => {
+        dispatch(setIsConnected('connecting'))
+      })
+
       return () => {
         socket.off('joined')
+        dispatch(setIsConnected('disconnected'))
         socket.disconnect()
       }
     }
-  }, [token])
+  }, [dispatch, token])
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
