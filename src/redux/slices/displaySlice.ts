@@ -97,23 +97,21 @@ export const updateOrder = createAsyncThunk(
     const orders = state.display.orders
     try {
       const data = await orderAPI.update(params)
-      console.log(orders[`${data.area}: ${data.screen}`])
+
       const filteredOrders = orders[`${data.area}: ${data.screen}`].filter(
         (order) => order._id !== data._id,
       )
       if (data.isDone === false) filteredOrders.push(data)
-      console.log(filteredOrders, data)
 
       const newOrderState = {
         ...orders,
         [`${data.area}: ${data.screen}`]: filteredOrders,
       }
-      console.log(newOrderState)
+
       return newOrderState
     } catch (error) {
       const { message } = error as Error
       if (error) {
-        console.log(error)
         return rejectWithValue(message)
       }
     }
