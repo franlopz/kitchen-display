@@ -47,8 +47,25 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
           navigate('/logout')
           throw new Error('token invalid')
         })
-      await dispatch(updateOrder({ _id, isDone: 'true' }))
       setButtonCaption('Cargando...')
+      await dispatch(updateOrder({ _id, isDone: 'true' }))
+        .unwrap()
+        .then()
+        .catch(() => {
+          setButtonCaption('Listo')
+          setButtonInLineStyle(undefined)
+          return toast.error(
+            (t) => {
+              return (
+                <span>
+                  Error while marking order as completed
+                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                </span>
+              )
+            },
+            { duration: Infinity },
+          )
+        })
     }
   }
 
