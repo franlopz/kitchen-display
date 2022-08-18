@@ -54,7 +54,7 @@ export const checkToken = createAsyncThunk(
         }
       }
     }
-    return state
+    return state.auth.user
   },
 )
 
@@ -153,11 +153,7 @@ const authSlice = createSlice({
       })
       .addCase(checkToken.fulfilled, (state, action) => {
         state.loading = false
-        if (state.user)
-          state = {
-            setupCompleted: state.user.setupCompleted,
-            ...action.payload,
-          }
+        if (state.user) state.user = action.payload
       })
   },
 })
