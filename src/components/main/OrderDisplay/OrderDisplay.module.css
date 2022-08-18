@@ -1,21 +1,40 @@
 .container {
   display: flex;
   flex-direction: row;
-  overflow: auto;
+  overflow: hidden;
   flex: 1;
 }
 
+.column-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 0px 20px 0px;
+}
+
+.screen-header {
+  position: sticky;
+  text-align: center;
+  background-color: #52565f;
+  margin: 10px 10px;
+  padding: 4px 0px;
+  color: white;
+  border-radius: 5px;
+}
+
 .my-masonry-grid {
+  position: relative;
   display: -webkit-box; /* Not needed if autoprefixing */
   display: -ms-flexbox; /* Not needed if autoprefixing */
+  flex: 1;
   display: flex;
-  /* margin-left: -30px; gutter size offset */
+  overflow-y: auto;
   width: 100%;
-  height: 100%;
-  overflow: auto;
-  margin: 0px;
 }
-.my-masonry-grid_column {
-  /* padding-left: 10px; gutter size */
-  /* background-clip: padding-box; */
+
+.alert {
+  color: white;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
 }

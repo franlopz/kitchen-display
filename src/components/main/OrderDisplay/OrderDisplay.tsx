@@ -6,6 +6,7 @@ import useSocket from '@/hooks/useSocket'
 import { useEffect } from 'react'
 import { Order } from '@/interfaces/Order'
 import { addOrder, orderUpdated } from '@/redux/slices/displaySlice'
+import notificationSound from '../../../assets/notification.mp3'
 
 const OrderDisplay = () => {
   const { orders, selectedScreens, settings } = useAppSelector(
@@ -14,12 +15,16 @@ const OrderDisplay = () => {
   const dispatch = useAppDispatch()
 
   const { listener, removeListener } = useSocket()
+  const audioPlayer = new Audio(notificationSound)
 
   useEffect(() => {
     selectedScreens.map((screen) => {
       listener({
         event: `${screen.area}:${screen.screen}/new`,
-        action: (data) => dispatch(addOrder(data)),
+        action: (data) => {
+          dispatch(addOrder(data))
+          audioPlayer.play()
+        },
       })
       return listener({
         event: `${screen.area}:${screen.screen}/updateStatus`,
@@ -45,18 +50,37 @@ const OrderDisplay = () => {
     <div className={styles.container}>
       {selectedScreens.map((screen) => {
         const identifier = `${screen.area}: ${screen.screen}` as string
+
         return (
-          <Masonry
-            style={{ width: settings[identifier]?.width }}
+          <div
+            className={styles['column-container']}
             key={identifier}
-            breakpointCols={settings[identifier]?.columns}
-            className={styles['my-masonry-grid']}
-            columnClassName={styles['my-masonry-grid_column']}
+            style={{
+              width: settings[identifier]?.width ?? '100%',
+              height: '100%',
+            }}
           >
-            {orders[identifier]?.map((order: Order) => (
-              <OrderCard key={order._id} order={order} screen={screen.screen} />
-            ))}
-          </Masonry>
+            <h4 className={styles['screen-header']}>{screen.screen}</h4>
+            {orders[identifier]?.length === 0 ? (
+              <p className={styles.alert}>No orders</p>
+            ) : (
+              ''
+            )}
+            <Masonry
+              key={identifier}
+              breakpointCols={settings[identifier]?.columns ?? 1}
+              className={styles['my-masonry-grid']}
+              columnClassName={styles['my-masonry-grid_column']}
+            >
+              {orders[identifier]?.map((order: Order) => (
+                <OrderCard
+                  key={order._id}
+                  order={order}
+                  screen={screen.screen}
+                />
+              ))}
+            </Masonry>
+          </div>
         )
       })}
     </div>
