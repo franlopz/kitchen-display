@@ -3,6 +3,7 @@ import { BASE_URL } from '@/lib/config'
 import { createContext, FC, ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/useRedux'
 import { setAccountId, setIsConnected } from '@/redux/slices/socketSlice'
+import { fetchOrders } from '@/redux/slices/displaySlice'
 
 interface Props {
   children: ReactNode
@@ -25,6 +26,11 @@ export const SocketContextProvider: FC<Props> = ({ children }) => {
 
       socket.on('connect', () => {
         socket.emit('join', token)
+        dispatch(
+          fetchOrders({
+            isDone: false,
+          }),
+        )
       })
 
       socket.on('joined', (accountId) => {
