@@ -9,10 +9,10 @@
 }
 
 .icon {
-  width: 1.2em;
-  height: 1.2em;
+  width: 30px;
+  height: 20px;
   color: white;
-  margin: 0px 15px;
+  margin: 0px 0px 0px 10px;
   cursor: pointer;
 }
 
