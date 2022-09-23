@@ -64,7 +64,7 @@ export const SocketContextProvider: FC<Props> = ({ children }) => {
         toast.error('Session expired. Login again')
         navigate('/logout')
       })
-  }, [dispatch, navigate, token])
+  }, [dispatch, token])
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
