@@ -5,6 +5,7 @@ import OrderDisplay from '@/components/main/OrderDisplay/OrderDisplay'
 import { useAppSelector } from '@/redux/hooks/useRedux'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
+import Menu from '@/components/Menu/Menu'
 
 const Main = () => {
   const { isConnected } = useAppSelector((state) => state.socket)
@@ -34,6 +35,7 @@ const Main = () => {
   return (
     <div className={styles.container}>
       <TopBar />
+      <Menu />
       <OrderDisplay />
       <Footer />
     </div>
