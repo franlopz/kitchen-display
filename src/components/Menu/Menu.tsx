@@ -6,7 +6,6 @@ import MenuData from './MenuData'
 const Menu = () => {
   const { user } = useAppSelector((state) => state.auth)
   const pathName = useLocation().pathname
-  console.log(pathName)
   return (
     <div className={styles.container}>
       <h3>{user?.userName}</h3>

@@ -26,7 +26,7 @@ const useOnBoarding = () => {
   const [listScreens, setListScreens] = useState<ScreenObject | null>(null)
   const [listUsers, setListUsers] = useState<User[] | null>(null)
   const [settings, setSettings] = useState<Settings>({ users: [], screens: {} })
-
+  console.log(settings)
   useEffect(() => {
     const areas = window.localStorage.getItem('areas')
     const screens = window.localStorage.getItem('screens')
