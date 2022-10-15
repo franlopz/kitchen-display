@@ -7,18 +7,21 @@ import { useEffect } from 'react'
 import { Order } from '@/interfaces/Order'
 import { addOrder, orderUpdated } from '@/redux/slices/displaySlice'
 import notificationSound from '../../../assets/notification.mp3'
+import { User } from '@/interfaces/ReduxState'
 
 const OrderDisplay = () => {
   const { orders, selectedScreens, settings } = useAppSelector(
     (state) => state.display,
   )
+  const { userId } = useAppSelector((state) => state.auth?.user) as User
+
   const dispatch = useAppDispatch()
 
   const { listener, removeListener } = useSocket()
   const audioPlayer = new Audio(notificationSound)
 
   useEffect(() => {
-    selectedScreens.map((screen) => {
+    selectedScreens[userId as string]?.map((screen) => {
       listener({
         event: `${screen.area}:${screen.screen}/new`,
         action: (data) => {
@@ -33,7 +36,7 @@ const OrderDisplay = () => {
     })
 
     return () => {
-      selectedScreens.map((screen) => {
+      selectedScreens[userId as string]?.map((screen) => {
         removeListener({ event: `${screen.area}:${screen.screen}/new` })
         return removeListener({
           event: `${screen.area}:${screen.screen}/updateStatus`,
@@ -42,13 +45,12 @@ const OrderDisplay = () => {
     }
   }, [dispatch, listener, removeListener, selectedScreens])
 
-  if (selectedScreens.length === 0) {
+  if (Object.keys(selectedScreens[userId as string] || {})?.length === 0) {
     return null
   }
-
   return (
     <div className={styles.container}>
-      {selectedScreens.map((screen) => {
+      {selectedScreens[userId as string]?.map((screen) => {
         const identifier = `${screen.area}: ${screen.screen}` as string
 
         return (

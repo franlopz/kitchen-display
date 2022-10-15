@@ -16,6 +16,7 @@ import Input from '../global/Form/Input'
 import toast from 'react-hot-toast'
 import { defaultTime } from '@/constants/constants'
 import { AiOutlineMenu } from 'react-icons/ai'
+import { User } from '@/interfaces/ReduxState'
 
 const widths = [
   '100%',
@@ -69,6 +70,7 @@ const TopBar = () => {
   const { selectedScreens, screens, settings } = useAppSelector(
     (state) => state.display,
   )
+  const { userId } = useAppSelector((state) => state.auth.user) as User
 
   const dispatch = useAppDispatch()
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -86,7 +88,9 @@ const TopBar = () => {
   }, [dispatch, selectedScreens])
 
   const selectTab = (tab: string[]) => {
-    dispatch(selectScreen(tab))
+    if (userId) {
+      dispatch(selectScreen({ tab, userId }))
+    }
   }
 
   useEffect(() => {
@@ -112,7 +116,7 @@ const TopBar = () => {
   }
 
   const getValues = () => {
-    const values = selectedScreens.map((screen) => {
+    const values = selectedScreens[userId as string]?.map((screen) => {
       return {
         value: `${screen.area}: ${screen.screen}`,
         label: `${screen.area}: ${screen.screen}`,
@@ -162,7 +166,7 @@ const TopBar = () => {
       <Modal title='Configuración' isOpen={isModalOpen}>
         <div className={styles['modal-settings']}>
           <div className={styles['group-settings']}>
-            {selectedScreens.map((screen) => {
+            {selectedScreens[userId as string]?.map((screen) => {
               const identifier = `${screen.area}: ${screen.screen}`
               const defaultTime1 =
                 settings[identifier]?.time1 ?? defaultTime.time1

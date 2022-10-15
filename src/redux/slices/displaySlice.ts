@@ -4,14 +4,15 @@ import {
   DisplayState,
   ReduxState,
   Settings,
-  SelectedScreen,
+  selectedScreens,
+  User,
 } from '@/interfaces/ReduxState'
 import * as orderAPI from '@/services/order'
 
 const initialState: DisplayState = {
   orders: {},
   screens: [],
-  selectedScreens: [],
+  selectedScreens: {},
   settings: {},
   status: 'idle',
   error: null,
@@ -27,8 +28,8 @@ export const fetchOrders = createAsyncThunk(
       const orders = {}
       const state = getState() as ReduxState
       const selectedScreens = state.display.selectedScreens
-
-      for (const screen of selectedScreens) {
+      const { userId } = state.auth.user as User
+      for (const screen of selectedScreens[userId as string] || []) {
         const response = await orderAPI.getAll({ ...params, ...screen })
         orders[`${screen.area}: ${screen.screen}`] = response
       }
@@ -48,7 +49,7 @@ export const initializeState = createAsyncThunk(
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState() as ReduxState
-
+      const { userId } = state.auth.user as User
       const screenSettings = JSON.parse(
         window.localStorage.getItem('screenSettings') || '{}',
       )
@@ -56,23 +57,28 @@ export const initializeState = createAsyncThunk(
       const screens = state.auth.user?.areas
 
       const savedSelectedScreens = JSON.parse(
-        window.localStorage.getItem('selectedScreens') || '[]',
+        window.localStorage.getItem('selectedScreens') || '{}',
       )
-      let selectedScreens: SelectedScreen[] = []
+      let selectedScreens: selectedScreens = {}
 
-      if (savedSelectedScreens?.length === 0) {
-        selectedScreens = [
-          {
-            area: state.auth.user?.areas[0].area as string,
-            screen: state.auth.user?.areas[0].screens[0] as string,
-          },
-        ]
+      const savedSelectedScreensLength =
+        savedSelectedScreens[userId as string]?.length || 0
+
+      if (savedSelectedScreensLength === 0) {
+        selectedScreens = {
+          ...savedSelectedScreens,
+          [userId as string]: [
+            {
+              area: state.auth.user?.areas[0].area as string,
+              screen: state.auth.user?.areas[0].screens[0] as string,
+            },
+          ],
+        }
       }
 
-      if (savedSelectedScreens?.length !== 0 && savedSelectedScreens) {
-        selectedScreens = [...savedSelectedScreens]
+      if (savedSelectedScreensLength !== 0 && savedSelectedScreens) {
+        selectedScreens = { ...savedSelectedScreens }
       }
-
       const newState = {
         ...initialState,
         screens,
@@ -118,35 +124,43 @@ export const updateOrder = createAsyncThunk(
   },
 )
 
+interface selectScreens {
+  tab: string[]
+  userId: string
+}
 export const displaySlice = createSlice({
   name: 'display',
   initialState,
   reducers: {
-    selectScreen: (state, action: PayloadAction<string[]>) => {
-      const selection = action.payload
+    selectScreen: (state, action: PayloadAction<selectScreens>) => {
+      const { tab: selection, userId } = action.payload
       for (const screen of selection) {
         const screenSplittedString = screen.split(': ')
         const selectionArea = screenSplittedString[0]
         const selectionScreen = screenSplittedString[1]
         const selectedScreens = state.selectedScreens
-
-        const selectedScreensArray = selectedScreens.map((screen) => {
-          return `${screen.area}: ${screen.screen}`
-        })
+        const selectedScreensArray = selectedScreens[userId as string].map(
+          (screen) => {
+            return `${screen.area}: ${screen.screen}`
+          },
+        )
 
         const tabExist = selectedScreensArray.includes(screen)
         if (tabExist === false) {
-          state.selectedScreens = [
-            ...selectedScreens,
+          state.selectedScreens[userId as string] = [
+            ...selectedScreens[userId as string],
             { area: selectionArea, screen: selectionScreen },
           ]
         }
-        if (tabExist && selectedScreens.length > 1) {
-          const newTabs = selectedScreens.filter(
+        if (
+          tabExist &&
+          Object.keys(selectedScreens[userId as string]).length > 1
+        ) {
+          const newTabs = selectedScreens[userId as string].filter(
             (existingTab) =>
               screen === `${existingTab.area}: ${existingTab.screen}`,
           )
-          state.selectedScreens = newTabs
+          state.selectedScreens[userId as string] = newTabs
         }
       }
     },

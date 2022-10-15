@@ -22,10 +22,14 @@ interface Area {
 export interface OrderObject {
   [key: string]: Order[]
 }
+
+export interface selectedScreens {
+  [key: string]: SelectedScreen[]
+}
 export interface DisplayState {
   orders: OrderObject
   screens: Area[]
-  selectedScreens: SelectedScreen[]
+  selectedScreens: selectedScreens
   settings: Settings
   status: string
   error: string | null
