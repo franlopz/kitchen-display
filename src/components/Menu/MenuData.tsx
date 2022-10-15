@@ -18,7 +18,7 @@ const MenuData = [
   {
     title: 'Change user',
     icon: <MdSwapVerticalCircle />,
-    path: '/pin',
+    path: '/changeuser',
     action: null,
   },
   {

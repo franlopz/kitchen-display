@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import * as auth from '@/services/auth'
 import { Settings } from '@/hooks/useOnBoarding'
 import { initialUser } from '@/lib/getUser'
-import { AuthState, ReduxState } from '@/interfaces/ReduxState'
+import { AuthState, ReduxState, User } from '@/interfaces/ReduxState'
 
 const initialState: AuthState = {
   user: initialUser,
@@ -110,6 +110,18 @@ export const initUsers = createAsyncThunk(
   },
 )
 
+export const changeUser = createAsyncThunk(
+  'auth/changeUser',
+  async (_, { getState }) => {
+    const state = getState() as ReduxState
+    const userState = state.auth.user
+    if (userState) {
+      const { roleName, userId, userName, areas, ...rest } = userState
+      return rest
+    }
+  },
+)
+
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -154,6 +166,10 @@ const authSlice = createSlice({
       .addCase(checkToken.fulfilled, (state, action) => {
         state.loading = false
         if (state.user) state.user = action.payload
+      })
+      .addCase(changeUser.fulfilled, (state, action) => {
+        state.loading = false
+        if (state.user) state.user = { ...(action.payload as User) }
       })
   },
 })

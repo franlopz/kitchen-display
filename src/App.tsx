@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp/SignUp'
 import AuthRoute from './lib/AuthRoute'
 import Logout from './lib/Logout'
 import { SocketContextProvider } from './context/socket'
+import ChangeUser from './pages/ChangeUser/ChangeUser'
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
                 </AuthRoute>
               }
             />
+            <Route path='/changeuser' element={<ChangeUser />} />
             <Route path='/logout' element={<Logout />} />
           </Routes>
         </StepsProvider>
