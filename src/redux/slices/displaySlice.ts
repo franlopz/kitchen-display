@@ -16,6 +16,7 @@ const initialState: DisplayState = {
   settings: {},
   status: 'idle',
   error: null,
+  isDrawerOpened: false,
 }
 
 export const fetchOrders = createAsyncThunk(
@@ -203,6 +204,9 @@ export const displaySlice = createSlice({
       const { savedOrder, screenIdentifier } = action.payload
       state.orders[screenIdentifier].push(savedOrder)
     },
+    openDrawer: (state) => {
+      state.isDrawerOpened = !state.isDrawerOpened
+    },
   },
   extraReducers(builder) {
     builder
@@ -235,6 +239,11 @@ export const displaySlice = createSlice({
   },
 })
 
-export const { selectScreen, saveSettings, orderUpdated, addOrder } =
-  displaySlice.actions
+export const {
+  selectScreen,
+  saveSettings,
+  orderUpdated,
+  addOrder,
+  openDrawer,
+} = displaySlice.actions
 export default displaySlice.reducer

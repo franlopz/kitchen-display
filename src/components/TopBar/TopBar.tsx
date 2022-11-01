@@ -2,12 +2,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks/useRedux'
 import {
   fetchOrders,
   initializeState,
+  openDrawer,
   saveSettings,
   selectScreen,
 } from '@/redux/slices/displaySlice'
 import styles from './TopBar.module.css'
 import { VscSettings } from 'react-icons/vsc'
-import Select, { CSSObjectWithLabel } from 'react-select'
+import Select from 'react-select'
 import React, { useEffect, useState } from 'react'
 import Modal from '../global/Modal/Modal'
 import Button from '../global/Button/Button'
@@ -34,7 +35,7 @@ const widths = [
 const columnsNumber = [1, 2, 3, 4, 5, 6]
 
 const customStyles = {
-  container: (base: CSSObjectWithLabel) => ({
+  container: (base: any) => ({
     ...base,
     width: '100%',
     flex: 'auto',
@@ -42,13 +43,13 @@ const customStyles = {
     padding: '10px',
     color: 'black',
   }),
-  control: (base: CSSObjectWithLabel) => ({
+  control: (base: any) => ({
     ...base,
     backgroundColor: 'transparent',
     height: '40px',
     borderColor: '#787e888e',
   }),
-  valueContainer: (base: CSSObjectWithLabel) => ({
+  valueContainer: (base: any) => ({
     ...base,
     display: '-webkit-box',
     position: 'relative',
@@ -60,7 +61,7 @@ const customStyles = {
     overflowX: 'auto',
     padding: '0px',
   }),
-  multiValue: (base: CSSObjectWithLabel) => ({
+  multiValue: (base: any) => ({
     ...base,
     width: 'fit-content',
   }),
@@ -161,6 +162,9 @@ const TopBar = () => {
     setIsModalOpen(!isModalOpen)
   }
 
+  const onClickHandler = () => {
+    dispatch(openDrawer())
+  }
   return (
     <>
       <Modal title='Configuración' isOpen={isModalOpen}>
@@ -191,6 +195,7 @@ const TopBar = () => {
                   />
                   <div className={styles['input-container']}>
                     <Input
+                      variantStyle={styles.input}
                       type='number'
                       min={0}
                       onChange={(e) => handleChange(e, 'time1')}
@@ -199,6 +204,7 @@ const TopBar = () => {
                       placeholder='Tiempo 1'
                     />
                     <Input
+                      variantStyle={styles.input}
                       type='number'
                       min={0}
                       onChange={(e) => handleChange(e, 'time2')}
@@ -206,6 +212,8 @@ const TopBar = () => {
                       name={identifier}
                       placeholder='Tiempo 2'
                     />
+                  </div>
+                  <div className={styles['time-alert']}>
                     <p>0</p>
                     <span></span>
                     <p>{defaultTime1}</p>
@@ -225,7 +233,7 @@ const TopBar = () => {
         </div>
       </Modal>
       <div className={styles.bar}>
-        <AiOutlineMenu className={styles.icon} />
+        <AiOutlineMenu className={styles.icon} onClick={onClickHandler} />
         <Select
           value={getValues()}
           options={getOptions()}
