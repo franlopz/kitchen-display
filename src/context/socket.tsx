@@ -1,5 +1,5 @@
 import socketClient, { Socket } from 'socket.io-client'
-import { BASE_URL } from '@/lib/config'
+import { SOCKET_URL } from '@/lib/config'
 import { createContext, FC, ReactNode, useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks/useRedux'
 import { setAccountId, setIsConnected } from '@/redux/slices/socketSlice'
@@ -25,7 +25,8 @@ export const SocketContextProvider: FC<Props> = ({ children }) => {
       .unwrap()
       .then(() => {
         if (Boolean(token) && Boolean(!socket?.connected)) {
-          socket = socketClient(BASE_URL, {
+          socket = socketClient(SOCKET_URL, {
+            path: '/socket.io/',
             query: { token },
             transports: ['websocket'],
             reconnection: true,
