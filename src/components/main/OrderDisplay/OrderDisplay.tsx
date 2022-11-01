@@ -8,6 +8,7 @@ import { Order } from '@/interfaces/Order'
 import { addOrder, orderUpdated } from '@/redux/slices/displaySlice'
 import notificationSound from '../../../assets/notification.mp3'
 import { User } from '@/interfaces/ReduxState'
+import Footer from '@/components/Footer/Footer'
 
 const OrderDisplay = () => {
   const { orders, selectedScreens, settings } = useAppSelector(
@@ -82,6 +83,7 @@ const OrderDisplay = () => {
                 />
               ))}
             </Masonry>
+            <Footer />
           </div>
         )
       })}

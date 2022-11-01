@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer/Footer'
 import TopBar from '@/components/TopBar/TopBar'
 import styles from './Main.module.css'
 import OrderDisplay from '@/components/main/OrderDisplay/OrderDisplay'
@@ -37,7 +36,6 @@ const Main = () => {
       <TopBar />
       <Menu />
       <OrderDisplay />
-      <Footer />
     </div>
   )
 }
