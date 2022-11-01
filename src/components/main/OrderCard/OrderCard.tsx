@@ -15,13 +15,24 @@ interface Props {
 }
 
 const OrderCard: FC<Props> = ({ order, screen }) => {
-  const { _id, type, number, seller, table, createdAt, orders, isVoided } =
-    order
+  const {
+    _id,
+    type,
+    number,
+    seller,
+    table,
+    createdAt,
+    orders,
+    isVoided,
+    area,
+  } = order
 
   const { ordersGroup, getStatus } = useOrders({
     orders,
     createdAt,
   })
+
+  const AreaAndScreen = `${area}: ${screen}`
 
   const navigate = useNavigate()
 
@@ -36,7 +47,7 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
   const clickHandler = async () => {
     if (buttonCaption === 'Listo') {
       setButtonCaption('Confirmar')
-      setButtonInLineStyle({ backgroundColor: '#2f80ed' })
+      setButtonInLineStyle({ backgroundColor: '#2f80ed', color: 'white' })
     }
     if (buttonCaption === 'Confirmar') {
       await dispatch(checkToken())
@@ -81,7 +92,7 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
   return (
     <div className={styles.container}>
       <Header
-        screen={screen}
+        screen={AreaAndScreen}
         number={number}
         type={type.name}
         seller={seller}
@@ -113,7 +124,7 @@ const OrderCard: FC<Props> = ({ order, screen }) => {
         ))}
       </div>
       <button
-        className={`${styles.button} ${getStatus(screen)}`}
+        className={`${styles.button} ${getStatus(AreaAndScreen)}`}
         style={buttonInLineStyle}
         onClick={clickHandler}
       >
