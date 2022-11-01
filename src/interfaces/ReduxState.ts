@@ -33,6 +33,7 @@ export interface DisplayState {
   settings: Settings
   status: string
   error: string | null
+  isDrawerOpened: boolean
 }
 
 export interface User {
@@ -52,6 +53,7 @@ export interface AuthState {
   loading: boolean
   error: string | null
   success: boolean
+  refreshTokenValid: boolean
 }
 
 interface SocketState {
