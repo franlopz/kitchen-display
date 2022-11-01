@@ -9,10 +9,11 @@
 }
 
 .icon {
+  z-index: 9999;
   width: 30px;
   height: 20px;
   color: white;
-  margin: 0px 0px 0px 10px;
+  margin: 0px 10px 0px 10px;
   cursor: pointer;
 }
 
@@ -86,7 +87,14 @@
   overflow-y: auto;
 }
 
-.input-container {
+.input-container{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
+}
+.time-alert {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -95,22 +103,27 @@
   justify-content: space-evenly;
 }
 
-.input-container span {
+.time-alert span {
   width: 100%;
   height: 20px;
   display: inline-block;
   margin: 0px;
 }
 
-.input-container span:nth-child(4) {
+.time-alert span:nth-child(2) {
   background-color: #43aa8b;
 }
 
-.input-container span:nth-child(6) {
+.time-alert span:nth-child(4) {
   background-color: #f9c74f;
 }
 
-.input-container span:nth-child(8) {
+.time-alert span:nth-child(6) {
   background-color: #f5373a;
   color: #f5373a;
+}
+
+.input{
+  padding: 0px;
+  text-align: center;
 }

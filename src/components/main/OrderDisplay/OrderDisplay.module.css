@@ -9,6 +9,12 @@
   display: flex;
   flex-direction: column;
   margin: 0px 0px 20px 0px;
+  border: none;
+  border-left: 1px solid rgb(83, 83, 83);
+}
+
+.column-container:first-child{
+  border-width: 0px;
 }
 
 .screen-header {

@@ -10,6 +10,13 @@
   border-radius: 5px;
 }
 
+.wrapper {
+  z-index: 10;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .container:before,
 .container:after {
   z-index: 9999;
