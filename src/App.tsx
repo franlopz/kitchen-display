@@ -6,10 +6,14 @@ import { StepsProvider } from './context/StepsContext'
 import PinScreen from './pages/PinScreen/PinScreen'
 import Main from './pages/Main/Main'
 import SignUp from './pages/SignUp/SignUp'
-import AuthRoute from './lib/AuthRoute'
-import Logout from './lib/Logout'
+import AuthRoute from './components/protectRoute/AuthRoute'
 import { SocketContextProvider } from './context/socket'
 import ChangeUser from './pages/ChangeUser/ChangeUser'
+import Settings from './pages/Settings/Settings'
+import HomeLayout from './components/protectRoute/HomeLayout'
+import Logout from './components/protectRoute/Logout'
+import SetupLayout from './components/protectRoute/SetupLayout'
+import PinLayout from './components/protectRoute/PinLayout'
 
 function App() {
   return (
@@ -18,47 +22,21 @@ function App() {
         <StepsProvider>
           <Toaster />
           <Routes>
-            <Route
-              path='/'
-              element={
-                <AuthRoute redirect='/login'>
-                  <Main />
-                </AuthRoute>
-              }
-            />
-            <Route
-              path='/login'
-              element={
-                <AuthRoute redirect='/'>
-                  <Login />
-                </AuthRoute>
-              }
-            />
-            <Route
-              path='/setup'
-              element={
-                <AuthRoute redirect='/login'>
-                  <OnBoarding />
-                </AuthRoute>
-              }
-            />
-            <Route
-              path='/signup'
-              element={
-                <AuthRoute redirect='/login'>
-                  <SignUp />
-                </AuthRoute>
-              }
-            />
-            <Route
-              path='/pin'
-              element={
-                <AuthRoute redirect='/login'>
-                  <PinScreen />
-                </AuthRoute>
-              }
-            />
-            <Route path='/changeuser' element={<ChangeUser />} />
+            <Route element={<AuthRoute redirect='/login' />}>
+              <Route element={<SetupLayout />}>
+                <Route path='/pin' element={<PinScreen />} />
+                <Route element={<PinLayout />}>
+                  <Route path='/setup' element={<OnBoarding />} /> {/* Si  */}
+                  <Route path='/settings' element={<Settings />} />
+                  <Route path='/changeuser' element={<ChangeUser />} />
+                  <Route path='/' element={<Main />} />
+                </Route>
+              </Route>
+            </Route>
+            <Route element={<HomeLayout redirect='/pin' />}>
+              <Route path='/login' element={<Login />} />
+              <Route path='/signup' element={<SignUp />} />
+            </Route>
             <Route path='/logout' element={<Logout />} />
           </Routes>
         </StepsProvider>
