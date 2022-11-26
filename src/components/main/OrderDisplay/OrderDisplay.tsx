@@ -83,7 +83,7 @@ const OrderDisplay = () => {
                 />
               ))}
             </Masonry>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         )
       })}

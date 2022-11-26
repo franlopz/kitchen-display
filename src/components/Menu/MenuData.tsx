@@ -8,13 +8,13 @@ import {
 
 const MenuData = [
   { title: 'Main', icon: <MdScreenShare />, path: '/', action: null },
-  { title: 'Settings', icon: <MdSettings />, path: '/settings', action: null },
-  {
-    title: 'Users',
-    icon: <MdSupervisedUserCircle />,
-    path: '/users',
-    action: null,
-  },
+  // { title: 'Settings', icon: <MdSettings />, path: '/settings', action: null },
+  // {
+  //   title: 'Users',
+  //   icon: <MdSupervisedUserCircle />,
+  //   path: '/users',
+  //   action: null,
+  // },
   {
     title: 'Change user',
     icon: <MdSwapVerticalCircle />,

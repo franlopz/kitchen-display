@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import * as auth from '@/services/auth'
 import { Settings } from '@/hooks/useOnBoarding'
 import { initialUser } from '@/lib/getUser'
@@ -9,6 +9,7 @@ const initialState: AuthState = {
   loading: false,
   error: null,
   success: false,
+  refreshTokenValid: true,
 }
 
 export const login = createAsyncThunk(
@@ -125,7 +126,11 @@ export const changeUser = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    refreshTokenStatus: (state, action: PayloadAction<boolean>) => {
+      state.refreshTokenValid = action.payload
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(login.pending, (state) => {
